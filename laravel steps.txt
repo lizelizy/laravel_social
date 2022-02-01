@@ -1,0 +1,68 @@
+(create auth)
+1. composer require laravel/ui
+2. php artisan ui vue --auth
+3. npm install && npm run dev
+
+(config main, header and footer and routes)
+
+(configure db in env)
+1. php artisan migrate
+
+
+
+(config user layout in app.blade and home.blade)
+
+[you can also config register and login in this order: view, controllers(validation and user), migrations create_user_table(run migrate), /http/model/user, and controller again for each view, and routes]
+[remember to include use App\Models\User; in controller]
+
+$user = User::findOrFail($user);
+
+return view('home', ['user' => $user]);
+
+FOR NEW TABLES IN DB
+
+MODEL = IMAGE OF THE TABLE
+migration = commands
+php artisan migrate
+
+ONE TO MANY
+
+Migration
+$table->unsignedBigInteger('user_id');
+$table->index('user_id');
+
+Model
+On new model
+
+use App\Models\User;
+public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+On user
+use App\Models\NewModel;
+public function NewModel(){
+        return $this->hasOne(NewModel::class);
+    }
+
+
+
+MANY TO MANY
+
+Migration
+$table->unsignedBigInteger('user_id');
+$table->index('user_id');
+
+Model
+On user
+use App\Models\NewModels;
+public function NewModels(){
+        return $this->hasMany(NewModel::class);
+    }
+
+On new model
+use App\Models\User;
+public function user(){
+        return $this->belongsTo(User::class);
+    }
+

@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     //Many to many
     public function posts(){
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->orderBy('created_at', 'DESC');
     }
 
 }

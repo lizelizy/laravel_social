@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+// Intervention image package
+use Intervention\Image\Facades\Image;
+
 class PostsController extends Controller{
 
     public function __construct(){
@@ -24,11 +27,27 @@ class PostsController extends Controller{
             
         ]);
 
-        dd(request('image')->store('uploads', 'public'));
+        $imagePath = request('image')->store('uploads', 'public');
         //php artisan storage:link
 
-        auth()->user()->posts()->create($data);
+        // composer require intervention/image
+        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1200, 1200);
+        $image->save();
 
-        dd(request()->all());
+        auth()->user()->posts()->create([
+            'caption' => $data['caption'],
+            'image' => $imagePath,
+        ]);
+
+        return redirect('/profile/' . auth()->user()->id);
+    }
+
+    //route model binding
+    public function show(\App\Models\Post $post){
+
+        return view('posts/show',[
+            'post' => $post,
+        ]);
+
     }
 }

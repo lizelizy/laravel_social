@@ -9,10 +9,10 @@
       <div class="col-9 pt-5">
             <div class="d-flex justify-content-between align-items-baseline">
               <h1>{{ $user->username }}</h1>
-            <a href="#">Add new post</a>
+            <a href="/p/create">Add new post</a>
             </div>
             <div class="d-flex">
-                <div class="pr-5"><strong>158</strong> posts</div>
+                <div class="pr-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
                 <div class="pr-5"><strong>23k</strong> followers</div>
                 <div class="pr-5"><strong>996</strong> following</div>
             </div>
@@ -22,15 +22,15 @@
       </div>
   </div>
   <div class="row pt-5">
-      <div class="col-4">
-          <img src="https://rforcats.net/assets/img/programmer.png" class="w-100" height="300">
- </div>
- <div class="col-4">
-          <img src="https://www.meme-arsenal.com/memes/ba744116d7443ca998b5955e5b0ea458.jpg" class="w-100" height="300">
+    @foreach($user->posts as $post)
+    <div class="col-4 pb-4">
+          <a href="/p/{{$post->id}}">
+          <img src="/storage/{{ $post->image }}" class="w-100" height="300">
+          </a>
 </div>
-<div class="col-4">
-          <img src="https://image.shutterstock.com/image-photo/beige-cat-headphones-using-silver-260nw-1764311762.jpg" class="w-100" height="300">
-</div>
+    @endforeach  
+
+
       </div>
   </div>
 </div>

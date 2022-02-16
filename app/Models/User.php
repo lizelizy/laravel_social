@@ -57,14 +57,19 @@ class User extends Authenticatable
         } );
     }
 
-    //One to many
+    //One to one
     public function profile(){
         return $this->hasOne(Profile::class);
     }
 
-    //Many to many
+    //One to many
     public function posts(){
         return $this->hasMany(Post::class)->orderBy('created_at', 'DESC');
+    }
+
+    //Many to Many
+    public function following(){
+        return $this->belongsToMany(Profile::class);
     }
 
 }

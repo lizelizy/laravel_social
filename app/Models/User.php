@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Mail\NewUserWelcomeMail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+//for using the email
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\Profile;
 use App\Models\Post;
@@ -54,7 +58,11 @@ class User extends Authenticatable
             $user->profile()->create([
                 'title' => $user->username,
             ]);
-        } );
+
+            // Sending an Email
+            Mail::to($user->email)->send(new NewUserWelcomeMail());
+
+        });
     }
 
     //One to one

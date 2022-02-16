@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Post;
 
 // Intervention image package
 use Intervention\Image\Facades\Image;
@@ -15,7 +16,12 @@ class PostsController extends Controller{
     }
 
     public function index(){
-        
+        //users that auth user is following
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+
+        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+
+        return view('posts/index', compact('posts'));
     }
 
     public function create(){
